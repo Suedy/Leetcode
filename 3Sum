@@ -1,0 +1,44 @@
+#Old Solution
+#select a, b, c firstly and later deal duplicated problems
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        output=[]
+        for i in range(len(nums)):
+            for j in range(i+1,len(nums)):
+                for k in range(j+1,len(nums)):
+                    if nums[i]+nums[j]+nums[k]==0:
+                        output.append([nums[i],nums[j],nums[k]])
+        output=[sorted(l) for l in output]
+        result=[]
+        for i in output:
+            if i not in result:
+                result.append(i)                  
+        return sorted(result)
+ 
+ #New Solution
+ 1. sort list
+ 2. if there are continuous number, need to avoid duplicated number
+ 3. transform 3 sum to 2 sum
+ 4. if the 2 sum less than target move first element, otherwise move second element forward
+ class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        n=len(nums)
+        result=[]
+        for i in range(n):
+            if i>0 and nums[i]==nums[i-1]:
+                continue
+            target=nums[i]*-1
+            s=i+1
+            e=n-1
+            while s<e:
+                if nums[s]+nums[e]==target:
+                    result.append([nums[i],nums[s],nums[e]])
+                    s=s+1
+                    while nums[s]==nums[s-1] and s<e:
+                        s=s+1
+                elif nums[s]+nums[e]<target:
+                    s=s+1
+                else:
+                    e=e-1
+        return result
